@@ -157,7 +157,7 @@ describe('MetricsExperienceStateProvider', () => {
   });
 
   describe('metricsSort', () => {
-    it('defaults to A→Z name sort', () => {
+    it('defaults to A to Z name sort', () => {
       const { result } = renderHook(() => useMetricsExperienceState(), { wrapper });
 
       expect(result.current.metricsSort).toEqual(DEFAULT_METRICS_SORT);

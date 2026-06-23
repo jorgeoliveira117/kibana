@@ -310,7 +310,7 @@ describe('MetricsExperienceGrid', () => {
     );
 
     expect(getByTestId(`${METRICS_SORT_SELECTOR_DATA_TEST_SUBJ}Button`)).toHaveTextContent(
-      'Sort: A→Z'
+      'Sort: A to Z'
     );
   });
 
@@ -537,8 +537,8 @@ describe('MetricsExperienceGrid', () => {
         isFullscreen: false,
         searchTerm: '',
         onSearchTermChange: jest.fn(),
-      metricsSort: DEFAULT_METRICS_SORT,
-      onMetricsSortChange: jest.fn(),
+        metricsSort: DEFAULT_METRICS_SORT,
+        onMetricsSortChange: jest.fn(),
         onToggleFullscreen: jest.fn(),
         flyoutState: undefined,
         onFlyoutStateChange: jest.fn(),
@@ -579,8 +579,8 @@ describe('MetricsExperienceGrid', () => {
         isFullscreen: false,
         searchTerm: '',
         onSearchTermChange: jest.fn(),
-      metricsSort: DEFAULT_METRICS_SORT,
-      onMetricsSortChange: jest.fn(),
+        metricsSort: DEFAULT_METRICS_SORT,
+        onMetricsSortChange: jest.fn(),
         onToggleFullscreen: jest.fn(),
         flyoutState: undefined,
         onFlyoutStateChange: jest.fn(),
@@ -626,8 +626,8 @@ describe('MetricsExperienceGrid', () => {
         isFullscreen: false,
         searchTerm: '',
         onSearchTermChange: jest.fn(),
-      metricsSort: DEFAULT_METRICS_SORT,
-      onMetricsSortChange: jest.fn(),
+        metricsSort: DEFAULT_METRICS_SORT,
+        onMetricsSortChange: jest.fn(),
         onToggleFullscreen: jest.fn(),
         flyoutState: undefined,
         onFlyoutStateChange: jest.fn(),

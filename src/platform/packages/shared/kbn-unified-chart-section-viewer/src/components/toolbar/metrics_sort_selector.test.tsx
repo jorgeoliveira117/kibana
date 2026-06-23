@@ -50,18 +50,12 @@ jest.mock('@kbn/shared-ux-toolbar-selector', () => {
   };
 });
 
-const renderSelector = (
-  props: Partial<React.ComponentProps<typeof MetricsSortSelector>> = {}
-) => {
+const renderSelector = (props: Partial<React.ComponentProps<typeof MetricsSortSelector>> = {}) => {
   const onChange = props.onChange ?? jest.fn();
 
   render(
     <IntlProvider locale="en">
-      <MetricsSortSelector
-        metricsSort={DEFAULT_METRICS_SORT}
-        onChange={onChange}
-        {...props}
-      />
+      <MetricsSortSelector metricsSort={DEFAULT_METRICS_SORT} onChange={onChange} {...props} />
     </IntlProvider>
   );
 
@@ -69,36 +63,36 @@ const renderSelector = (
 };
 
 describe('MetricsSortSelector', () => {
-  it('renders with the default A→Z selection', () => {
+  it('renders with the default A to Z selection', () => {
     renderSelector();
 
     expect(screen.getByTestId(METRICS_SORT_SELECTOR_DATA_TEST_SUBJ)).toBeInTheDocument();
     expect(screen.getByTestId(`${METRICS_SORT_SELECTOR_DATA_TEST_SUBJ}Button`)).toHaveTextContent(
-      'Sort: A→Z'
+      'Sort: A to Z'
     );
     expect(
       screen.getByTestId(
-        `${METRICS_SORT_SELECTOR_DATA_TEST_SUBJ}Option-${encodeMetricsSortValue(DEFAULT_METRICS_SORT)}`
+        `${METRICS_SORT_SELECTOR_DATA_TEST_SUBJ}Option-${encodeMetricsSortValue(
+          DEFAULT_METRICS_SORT
+        )}`
       )
     ).toHaveAttribute('data-checked', 'on');
   });
 
-  it('calls onChange with Z→A when that option is selected', () => {
+  it('calls onChange with Z to A when that option is selected', () => {
     const onChange = jest.fn();
     renderSelector({ onChange });
 
-    fireEvent.click(
-      screen.getByTestId(`${METRICS_SORT_SELECTOR_DATA_TEST_SUBJ}Option-name:desc`)
-    );
+    fireEvent.click(screen.getByTestId(`${METRICS_SORT_SELECTOR_DATA_TEST_SUBJ}Option-name:desc`));
 
     expect(onChange).toHaveBeenCalledWith({ type: 'name', direction: 'desc' });
   });
 
-  it('shows Z→A in the button label when that sort is selected', () => {
+  it('shows Z to A in the button label when that sort is selected', () => {
     renderSelector({ metricsSort: { type: 'name', direction: 'desc' } });
 
     expect(screen.getByTestId(`${METRICS_SORT_SELECTOR_DATA_TEST_SUBJ}Button`)).toHaveTextContent(
-      'Sort: Z→A'
+      'Sort: Z to A'
     );
   });
 });

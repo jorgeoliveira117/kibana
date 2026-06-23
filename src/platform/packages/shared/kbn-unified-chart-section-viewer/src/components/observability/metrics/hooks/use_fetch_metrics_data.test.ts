@@ -199,7 +199,7 @@ describe('useFetchMetricsData', () => {
       expect(result.current.allDimensions).toEqual([hostDimension]);
     });
 
-    it('returns sorted metricItems and allDimensions', async () => {
+    it('returns metricItems in parse order and sorted allDimensions', async () => {
       const parsed = createMockParsedMetrics(
         ['system.memory.utilization', 'system.cpu.utilization'],
         [serviceDimension, hostDimension]
@@ -213,8 +213,8 @@ describe('useFetchMetricsData', () => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(result.current.metricItems[0].metricName).toBe('system.cpu.utilization');
-      expect(result.current.metricItems[1].metricName).toBe('system.memory.utilization');
+      expect(result.current.metricItems[0].metricName).toBe('system.memory.utilization');
+      expect(result.current.metricItems[1].metricName).toBe('system.cpu.utilization');
       expect(result.current.allDimensions[0].name).toBe('host.name');
       expect(result.current.allDimensions[1].name).toBe('service.name');
     });

@@ -9,10 +9,7 @@
 
 import { ES_FIELD_TYPES } from '@kbn/field-types';
 import type { ParsedMetricItem } from '../../../../types';
-import {
-  compareByMetricName,
-  getMetricsSortComparator,
-} from './metrics_sort_comparators';
+import { compareByMetricName, getMetricsSortComparator } from './metrics_sort_comparators';
 
 const createMetricItem = (metricName: string): ParsedMetricItem => ({
   metricName,
@@ -29,7 +26,7 @@ describe('metrics sort comparators', () => {
   const expectedAscNames = [...unsortedNames].sort((a, b) => a.localeCompare(b));
 
   describe('compareByMetricName', () => {
-    it('sorts metric names A→Z using localeCompare', () => {
+    it('sorts metric names A to Z using localeCompare', () => {
       const sorted = [...unsortedItems].sort(compareByMetricName);
 
       expect(sorted.map((item) => item.metricName)).toEqual(expectedAscNames);
@@ -44,14 +41,14 @@ describe('metrics sort comparators', () => {
   });
 
   describe('getMetricsSortComparator', () => {
-    it('returns A→Z ordering for name + asc', () => {
+    it('returns A to Z ordering for name + asc', () => {
       const comparator = getMetricsSortComparator('name', 'asc');
       const sorted = [...unsortedItems].sort(comparator);
 
       expect(sorted.map((item) => item.metricName)).toEqual(expectedAscNames);
     });
 
-    it('returns Z→A ordering for name + desc', () => {
+    it('returns Z to A ordering for name + desc', () => {
       const comparator = getMetricsSortComparator('name', 'desc');
       const sorted = [...unsortedItems].sort(comparator);
 
