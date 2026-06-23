@@ -16,12 +16,17 @@ import {
   type MetricsExperienceRestorableState,
   useRestorableState,
 } from '../../../../../restorable_state';
+import {
+  DEFAULT_METRICS_SORT,
+  type MetricsSortState,
+} from '../../sort/metrics_sort_types';
 
 export interface MetricsExperienceStateContextValue extends MetricsExperienceRestorableState {
   profileId: string;
   onPageChange: (value: number) => void;
   onDimensionsChange: (value: Dimension[]) => void;
   onSearchTermChange: (value: string) => void;
+  onMetricsSortChange: (value: MetricsSortState) => void;
   onToggleFullscreen: () => void;
   onFlyoutStateChange: (value: FlyoutState | undefined) => void;
   onFlyoutSelectedTabChange: (value: FlyoutTabId) => void;
@@ -42,6 +47,7 @@ export function MetricsExperienceStateProvider({
   const [searchTerm, setSearchTerm] = useRestorableState('searchTerm', '');
   const [isFullscreen, setIsFullscreen] = useRestorableState('isFullscreen', false);
   const [flyoutState, setFlyoutState] = useRestorableState('flyoutState', undefined);
+  const [metricsSort, setMetricsSort] = useRestorableState('metricsSort', DEFAULT_METRICS_SORT);
 
   const onDimensionsChange = useCallback(
     (nextDimensions: Dimension[]) => {
@@ -67,6 +73,18 @@ export function MetricsExperienceStateProvider({
       });
     },
     [setSearchTerm, setCurrentPage]
+  );
+
+  const onMetricsSortChange = useCallback(
+    (nextSort: MetricsSortState) => {
+      setMetricsSort((prevSort) => {
+        if (prevSort.type !== nextSort.type || prevSort.direction !== nextSort.direction) {
+          setCurrentPage(0);
+        }
+        return nextSort;
+      });
+    },
+    [setMetricsSort, setCurrentPage]
   );
 
   const onToggleFullscreen = useCallback(() => {
@@ -95,10 +113,12 @@ export function MetricsExperienceStateProvider({
         isFullscreen,
         searchTerm,
         selectedDimensions,
+        metricsSort,
         flyoutState,
         onPageChange,
         onDimensionsChange,
         onSearchTermChange,
+        onMetricsSortChange,
         onToggleFullscreen,
         onFlyoutStateChange,
         onFlyoutSelectedTabChange,

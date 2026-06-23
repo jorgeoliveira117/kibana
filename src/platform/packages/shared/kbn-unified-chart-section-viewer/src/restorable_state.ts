@@ -8,6 +8,7 @@
  */
 
 import { createRestorableStateProvider } from '@kbn/restorable-state';
+import type { MetricsSortState } from './components/observability/metrics/sort/metrics_sort_types';
 import type { Dimension } from './types';
 
 export type FlyoutTabId = 'overview' | 'esql-query';
@@ -35,6 +36,9 @@ export interface MetricsExperienceRestorableState {
 
   // Selected dimensions
   selectedDimensions: Dimension[];
+
+  // Grid sort selection (type + direction).
+  metricsSort: MetricsSortState;
 
   // Open metric details flyout state, persisted across navigation.
   flyoutState?: FlyoutState;
