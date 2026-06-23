@@ -12,7 +12,7 @@ import { keys } from '@elastic/eui';
 import { usePerformanceContext } from '@kbn/ebt-tools';
 import { i18n } from '@kbn/i18n';
 import { useFetchMetricsData } from './hooks/use_fetch_metrics_data';
-import { METRICS_BREAKDOWN_SELECTOR_DATA_TEST_SUBJ } from '../../../common/constants';
+import { METRICS_BREAKDOWN_SELECTOR_DATA_TEST_SUBJ, METRICS_SORT_SELECTOR_DATA_TEST_SUBJ } from '../../../common/constants';
 import { useMetricsExperienceState } from './context/metrics_experience_state_provider';
 import { ChartsGrid } from '../../charts_grid';
 import { EmptyState } from '../../empty_state/empty_state';
@@ -43,6 +43,7 @@ export const MetricsExperienceGrid = ({
   isTabSelected,
   breakdownField,
   onBreakdownFieldChange,
+  isGridSortEnabled = false,
 }: UnifiedMetricsGridProps) => {
   const {
     searchTerm,
@@ -129,6 +130,7 @@ export const MetricsExperienceGrid = ({
     renderToggleActions,
     onDimensionsChange: onToolbarDimensionsChange,
     isLoading: isDiscoverLoading,
+    isGridSortEnabled,
   });
 
   const onKeyDown = useCallback(
@@ -208,9 +210,12 @@ const areSelectorPortalsOpen = () => {
     const hasBreakdownSelector = portal.querySelector(
       `[data-test-subj*=${METRICS_BREAKDOWN_SELECTOR_DATA_TEST_SUBJ}]`
     );
+    const hasSortSelector = portal.querySelector(
+      `[data-test-subj*=${METRICS_SORT_SELECTOR_DATA_TEST_SUBJ}]`
+    );
     const hasSelectableList = portal.querySelector('[data-test-subj*="Selectable"]');
 
-    if (hasBreakdownSelector || hasSelectableList) {
+    if (hasBreakdownSelector || hasSortSelector || hasSelectableList) {
       // Check if the portal is visible and has focusable content
       const style = window.getComputedStyle(portal);
       if (style.display !== 'none' && style.visibility !== 'hidden') {

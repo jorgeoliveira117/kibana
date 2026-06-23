@@ -15,6 +15,7 @@ import { css } from '@emotion/react';
 import type { Dimension, ParsedMetricItem, UnifiedMetricsGridProps } from '../../../types';
 import { useMetricsExperienceState } from '../../observability/metrics/context/metrics_experience_state_provider';
 import { DimensionsSelector } from '../dimensions_selector';
+import { MetricsSortSelector } from '../metrics_sort_selector';
 import { MAX_DIMENSIONS_SELECTIONS } from '../../../common/constants';
 
 interface UseToolbarActionsProps extends Pick<UnifiedMetricsGridProps, 'renderToggleActions'> {
@@ -23,6 +24,7 @@ interface UseToolbarActionsProps extends Pick<UnifiedMetricsGridProps, 'renderTo
   hideDimensionsSelector?: boolean;
   hideRightSideActions?: boolean;
   isLoading?: boolean;
+  isGridSortEnabled?: boolean;
   /** Forwarded to {@link DimensionsSelector}; see its prop docs. */
   metricItems?: ParsedMetricItem[];
 }
@@ -34,10 +36,17 @@ export const useToolbarActions = ({
   hideDimensionsSelector = false,
   hideRightSideActions = false,
   isLoading = false,
+  isGridSortEnabled = false,
   metricItems,
 }: UseToolbarActionsProps) => {
-  const { selectedDimensions, onDimensionsChange, isFullscreen, onToggleFullscreen } =
-    useMetricsExperienceState();
+  const {
+    selectedDimensions,
+    onDimensionsChange,
+    isFullscreen,
+    onToggleFullscreen,
+    metricsSort,
+    onMetricsSortChange,
+  } = useMetricsExperienceState();
   const onDimensionsSelectionChange = onDimensionsChangeProp ?? onDimensionsChange;
 
   const { euiTheme } = useEuiTheme();
@@ -62,6 +71,13 @@ export const useToolbarActions = ({
           metricItems={metricItems}
         />
       ),
+      isGridSortEnabled ? (
+        <MetricsSortSelector
+          metricsSort={metricsSort}
+          onChange={onMetricsSortChange}
+          fullWidth={isSmallScreen}
+        />
+      ) : null,
     ],
     [
       isSmallScreen,
@@ -71,6 +87,9 @@ export const useToolbarActions = ({
       hideDimensionsSelector,
       isLoading,
       metricItems,
+      isGridSortEnabled,
+      metricsSort,
+      onMetricsSortChange,
     ]
   );
 

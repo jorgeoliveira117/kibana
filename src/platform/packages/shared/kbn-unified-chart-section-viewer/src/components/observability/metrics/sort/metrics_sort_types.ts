@@ -17,3 +17,19 @@ export interface MetricsSortState {
 }
 
 export const DEFAULT_METRICS_SORT: MetricsSortState = { type: 'name', direction: 'asc' };
+
+export const encodeMetricsSortValue = (sort: MetricsSortState): string =>
+  `${sort.type}:${sort.direction}`;
+
+export const decodeMetricsSortValue = (value: string): MetricsSortState | undefined => {
+  const [type, direction] = value.split(':');
+  if (type === 'name' && (direction === 'asc' || direction === 'desc')) {
+    return { type, direction };
+  }
+  return undefined;
+};
+
+export const METRICS_SORT_OPTIONS: MetricsSortState[] = [
+  { type: 'name', direction: 'asc' },
+  { type: 'name', direction: 'desc' },
+];

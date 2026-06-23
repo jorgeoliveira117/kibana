@@ -42,6 +42,11 @@ export interface UnifiedMetricsGridProps extends ChartSectionProps {
    * cross-plugin features such as the Streams flyout field section and ErrorCallout.
    */
   externalServices?: ExternalServices;
+  /**
+   * When true, shows the metrics grid sort control in the toolbar.
+   * Intended to be driven by a feature flag in the Discover host.
+   */
+  isGridSortEnabled?: boolean;
 }
 
 export interface Dimension {
