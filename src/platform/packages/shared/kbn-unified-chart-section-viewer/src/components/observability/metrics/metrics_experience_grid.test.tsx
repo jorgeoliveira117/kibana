@@ -11,11 +11,15 @@ import React from 'react';
 import { EuiProvider } from '@elastic/eui';
 import { act, fireEvent, render } from '@testing-library/react';
 import { MetricsExperienceGrid } from './metrics_experience_grid';
+import { MetricsExperienceGridContent } from './metrics_experience_grid_content';
 import * as hooks from './hooks';
 import { useFetchMetricsData } from './hooks/use_fetch_metrics_data';
 
 const useFetchMetricsDataMock = useFetchMetricsData as jest.MockedFunction<
   typeof useFetchMetricsData
+>;
+const MetricsExperienceGridContentMock = MetricsExperienceGridContent as jest.MockedFunction<
+  typeof MetricsExperienceGridContent
 >;
 import type {
   UnifiedHistogramFetch$,
@@ -78,7 +82,7 @@ jest.mock('@kbn/shared-ux-toolbar-selector', () => {
     }) => {
       const handleOptionClick = (clickedOption: any) => {
         if (clickedOption.disabled) return;
-        if (singleSelection) {
+        if (singleSelection !== false) {
           onChange?.(clickedOption);
           return;
         }
@@ -312,6 +316,108 @@ describe('MetricsExperienceGrid', () => {
     expect(getByTestId(`${METRICS_SORT_SELECTOR_DATA_TEST_SUBJ}Button`)).toHaveTextContent(
       'Sort: A to Z'
     );
+  });
+
+  describe('metrics grid sort', () => {
+    const unsortedMetricItems: ParsedMetricItem[] = [
+      {
+        metricName: 'field2',
+        dimensionFields: [dimensions[1]],
+        indexName: 'metrics-*',
+        units: [],
+        metricTypes: [],
+        fieldTypes: [],
+      },
+      {
+        metricName: 'field1',
+        dimensionFields: [dimensions[0]],
+        indexName: 'metrics-*',
+        units: [],
+        metricTypes: [],
+        fieldTypes: [],
+      },
+    ];
+
+    beforeEach(() => {
+      MetricsExperienceGridContentMock.mockClear();
+      useFetchMetricsDataMock.mockReturnValue({
+        metricItems: unsortedMetricItems,
+        allDimensions: dimensions,
+        activeDimensions: [],
+        loading: false,
+        error: null,
+      });
+      useMetricFieldsFilterMock.mockImplementation(({ metricItems: items }) => ({
+        filteredMetricItems: items,
+      }));
+    });
+
+    it('passes A to Z sorted metric items to the grid content by default', () => {
+      render(<MetricsExperienceGrid {...defaultProps} />, { wrapper: IntlProvider });
+
+      expect(
+        MetricsExperienceGridContentMock.mock.calls.at(-1)?.[0].metricItems.map(
+          (item) => item.metricName
+        )
+      ).toEqual(['field1', 'field2']);
+    });
+
+    it('passes Z to A sorted metric items when metricsSort direction is desc', () => {
+      useMetricsExperienceStateMock.mockReturnValue({
+        currentPage: 0,
+        selectedDimensions: [],
+        onDimensionsChange: jest.fn(),
+        onPageChange: jest.fn(),
+        isFullscreen: false,
+        searchTerm: '',
+        onSearchTermChange: jest.fn(),
+        metricsSort: { type: 'name', direction: 'desc' },
+        onMetricsSortChange: jest.fn(),
+        onToggleFullscreen: jest.fn(),
+        flyoutState: undefined,
+        onFlyoutStateChange: jest.fn(),
+        onFlyoutSelectedTabChange: jest.fn(),
+        profileId: 'test-profile-id',
+      });
+
+      render(<MetricsExperienceGrid {...defaultProps} />, { wrapper: IntlProvider });
+
+      expect(
+        MetricsExperienceGridContentMock.mock.calls.at(-1)?.[0].metricItems.map(
+          (item) => item.metricName
+        )
+      ).toEqual(['field2', 'field1']);
+    });
+
+    it('calls onMetricsSortChange when the Z to A sort option is selected', () => {
+      const onMetricsSortChange = jest.fn();
+
+      useMetricsExperienceStateMock.mockReturnValue({
+        currentPage: 0,
+        selectedDimensions: [],
+        onDimensionsChange: jest.fn(),
+        onPageChange: jest.fn(),
+        isFullscreen: false,
+        searchTerm: '',
+        onSearchTermChange: jest.fn(),
+        metricsSort: DEFAULT_METRICS_SORT,
+        onMetricsSortChange,
+        onToggleFullscreen: jest.fn(),
+        flyoutState: undefined,
+        onFlyoutStateChange: jest.fn(),
+        onFlyoutSelectedTabChange: jest.fn(),
+        profileId: 'test-profile-id',
+      });
+
+      const { getByTestId } = render(
+        <MetricsExperienceGrid {...defaultProps} isGridSortEnabled={true} />,
+        { wrapper: IntlProvider }
+      );
+
+      fireEvent.click(getByTestId(`${METRICS_SORT_SELECTOR_DATA_TEST_SUBJ}Option-name:desc`));
+
+      expect(onMetricsSortChange).toHaveBeenCalledWith({ type: 'name', direction: 'desc' });
+    });
   });
 
   it('renders Discover ErrorCallout when METRICS_INFO fetch fails with a network error', () => {

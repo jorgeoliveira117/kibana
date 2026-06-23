@@ -211,6 +211,18 @@ describe('MetricsExperienceStateProvider', () => {
       expect(result.current.metricsSort).toEqual(currentSort);
       expect(result.current.currentPage).toBe(3);
     });
+
+    it('persists metricsSort across rerenders within the session', () => {
+      const { result, rerender } = renderHook(() => useMetricsExperienceState(), { wrapper });
+
+      act(() => {
+        result.current.onMetricsSortChange({ type: 'name', direction: 'desc' });
+      });
+
+      rerender();
+
+      expect(result.current.metricsSort).toEqual({ type: 'name', direction: 'desc' });
+    });
   });
 
   describe('onToggleFullscreen', () => {

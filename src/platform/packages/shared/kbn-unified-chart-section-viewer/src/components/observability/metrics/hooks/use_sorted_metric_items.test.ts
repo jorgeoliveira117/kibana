@@ -73,4 +73,24 @@ describe('useSortedMetricItems', () => {
 
     expect(result.current).toBe(firstResult);
   });
+
+  it('returns a new sorted array when sort direction changes', () => {
+    const { result, rerender } = renderHook(
+      ({ items, sort }) => useSortedMetricItems(items, sort),
+      {
+        initialProps: {
+          items: unsortedItems,
+          sort: DEFAULT_METRICS_SORT,
+        },
+      }
+    );
+
+    rerender({ items: unsortedItems, sort: { type: 'name', direction: 'desc' } });
+
+    expect(result.current.map((item) => item.metricName)).toEqual([
+      'system.memory.utilization',
+      'system.cpu.utilization',
+      'k8s.pod.cpu',
+    ]);
+  });
 });
