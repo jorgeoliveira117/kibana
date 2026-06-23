@@ -13,6 +13,7 @@ import { ES_FIELD_TYPES } from '@kbn/field-types';
 import type { ParsedMetricItem } from '../../types';
 import { MetricFlyoutBody } from './metrics_flyout_body';
 import { useMetricsExperienceState } from '../observability/metrics/context/metrics_experience_state_provider';
+import { DEFAULT_METRICS_SORT } from '../observability/metrics/sort/metrics_sort_types';
 import type { FlyoutState } from '../../restorable_state';
 
 jest.mock('../observability/metrics/context/metrics_experience_state_provider', () => ({
@@ -39,6 +40,8 @@ const buildContext = (overrides: {
   onPageChange: jest.fn(),
   onDimensionsChange: jest.fn(),
   onSearchTermChange: jest.fn(),
+  metricsSort: DEFAULT_METRICS_SORT,
+  onMetricsSortChange: jest.fn(),
   onToggleFullscreen: jest.fn(),
   onFlyoutStateChange: jest.fn(),
   onFlyoutSelectedTabChange: overrides.onFlyoutSelectedTabChange ?? jest.fn(),

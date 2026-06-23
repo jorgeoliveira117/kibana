@@ -32,6 +32,7 @@ import {
 import type { ParsedMetricItem, Dimension, UnifiedMetricsGridProps } from '../../../types';
 import { fieldsMetadataPluginPublicMock } from '@kbn/fields-metadata-plugin/public/mocks';
 import * as metricsExperienceStateProvider from './context/metrics_experience_state_provider';
+import { DEFAULT_METRICS_SORT } from './sort/metrics_sort_types';
 
 jest.mock('./context/metrics_experience_state_provider');
 jest.mock('@kbn/ebt-tools', () => ({
@@ -253,6 +254,8 @@ describe('MetricsExperienceGrid', () => {
       isFullscreen: false,
       searchTerm: '',
       onSearchTermChange: jest.fn(),
+      metricsSort: DEFAULT_METRICS_SORT,
+      onMetricsSortChange: jest.fn(),
       onToggleFullscreen: jest.fn(),
       flyoutState: undefined,
       onFlyoutStateChange: jest.fn(),
@@ -428,6 +431,8 @@ describe('MetricsExperienceGrid', () => {
       isFullscreen: false,
       searchTerm: '',
       onSearchTermChange,
+      metricsSort: DEFAULT_METRICS_SORT,
+      onMetricsSortChange: jest.fn(),
       onToggleFullscreen: jest.fn(),
       flyoutState: undefined,
       onFlyoutStateChange: jest.fn(),
@@ -474,6 +479,8 @@ describe('MetricsExperienceGrid', () => {
       isFullscreen,
       searchTerm: '',
       onSearchTermChange: jest.fn(),
+      metricsSort: DEFAULT_METRICS_SORT,
+      onMetricsSortChange: jest.fn(),
       onToggleFullscreen,
       flyoutState: undefined,
       onFlyoutStateChange: jest.fn(),
@@ -515,6 +522,8 @@ describe('MetricsExperienceGrid', () => {
         isFullscreen: false,
         searchTerm: '',
         onSearchTermChange: jest.fn(),
+      metricsSort: DEFAULT_METRICS_SORT,
+      onMetricsSortChange: jest.fn(),
         onToggleFullscreen: jest.fn(),
         flyoutState: undefined,
         onFlyoutStateChange: jest.fn(),
@@ -555,6 +564,8 @@ describe('MetricsExperienceGrid', () => {
         isFullscreen: false,
         searchTerm: '',
         onSearchTermChange: jest.fn(),
+      metricsSort: DEFAULT_METRICS_SORT,
+      onMetricsSortChange: jest.fn(),
         onToggleFullscreen: jest.fn(),
         flyoutState: undefined,
         onFlyoutStateChange: jest.fn(),
@@ -600,6 +611,8 @@ describe('MetricsExperienceGrid', () => {
         isFullscreen: false,
         searchTerm: '',
         onSearchTermChange: jest.fn(),
+      metricsSort: DEFAULT_METRICS_SORT,
+      onMetricsSortChange: jest.fn(),
         onToggleFullscreen: jest.fn(),
         flyoutState: undefined,
         onFlyoutStateChange: jest.fn(),

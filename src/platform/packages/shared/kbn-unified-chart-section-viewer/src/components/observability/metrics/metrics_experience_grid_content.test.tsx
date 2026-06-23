@@ -20,6 +20,7 @@ import { __IntlProvider as IntlProvider } from '@kbn/i18n-react';
 import type { ParsedMetricItem, MetricUnit, Dimension } from '../../../types';
 import { ES_FIELD_TYPES } from '@kbn/field-types';
 import * as metricsExperienceStateProvider from './context/metrics_experience_state_provider';
+import { DEFAULT_METRICS_SORT } from './sort/metrics_sort_types';
 import { getFetch$Mock, getFetchParamsMock } from '@kbn/unified-histogram/__mocks__/fetch_params';
 import type { MappingTimeSeriesMetricType } from '@elastic/elasticsearch/lib/api/types';
 
@@ -121,6 +122,8 @@ describe('MetricsExperienceGridContent', () => {
       isFullscreen: false,
       searchTerm: '',
       onSearchTermChange: jest.fn(),
+      metricsSort: DEFAULT_METRICS_SORT,
+      onMetricsSortChange: jest.fn(),
       onToggleFullscreen: jest.fn(),
       flyoutState: undefined,
       onFlyoutStateChange: jest.fn(),
@@ -184,6 +187,8 @@ describe('MetricsExperienceGridContent', () => {
       isFullscreen: false,
       searchTerm: 'cpu',
       onSearchTermChange: jest.fn(),
+      metricsSort: DEFAULT_METRICS_SORT,
+      onMetricsSortChange: jest.fn(),
       onToggleFullscreen: jest.fn(),
       flyoutState: undefined,
       onFlyoutStateChange: jest.fn(),

@@ -13,6 +13,7 @@ import {
   MetricsExperienceStateContext,
   MetricsExperienceStateProvider,
 } from './metrics_experience_state_context';
+import { DEFAULT_METRICS_SORT } from '../../sort/metrics_sort_types';
 
 jest.mock('../../../../../restorable_state', () => {
   const { useState, useCallback } = jest.requireActual('react');
@@ -152,6 +153,63 @@ describe('MetricsExperienceStateProvider', () => {
       // useDiscoverFieldForBreakdown fires an internal sync after restore,
       // which must not reset the page the user was on.
       expect(result.current.currentPage).toBe(4);
+    });
+  });
+
+  describe('metricsSort', () => {
+    it('defaults to A→Z name sort', () => {
+      const { result } = renderHook(() => useMetricsExperienceState(), { wrapper });
+
+      expect(result.current.metricsSort).toEqual(DEFAULT_METRICS_SORT);
+    });
+  });
+
+  describe('onMetricsSortChange', () => {
+    it('updates metricsSort', () => {
+      const { result } = renderHook(() => useMetricsExperienceState(), { wrapper });
+      const nextSort = { type: 'name' as const, direction: 'desc' as const };
+
+      act(() => {
+        result.current.onMetricsSortChange(nextSort);
+      });
+
+      expect(result.current.metricsSort).toEqual(nextSort);
+    });
+
+    it('resets currentPage to 0 when sort changes', () => {
+      const { result } = renderHook(() => useMetricsExperienceState(), { wrapper });
+
+      act(() => {
+        result.current.onPageChange(2);
+      });
+      expect(result.current.currentPage).toBe(2);
+
+      act(() => {
+        result.current.onMetricsSortChange({ type: 'name', direction: 'desc' });
+      });
+
+      expect(result.current.metricsSort).toEqual({ type: 'name', direction: 'desc' });
+      expect(result.current.currentPage).toBe(0);
+    });
+
+    it('does not reset currentPage when sort is unchanged', () => {
+      const { result } = renderHook(() => useMetricsExperienceState(), { wrapper });
+      const currentSort = { type: 'name' as const, direction: 'asc' as const };
+
+      act(() => {
+        result.current.onMetricsSortChange(currentSort);
+      });
+      act(() => {
+        result.current.onPageChange(3);
+      });
+      expect(result.current.currentPage).toBe(3);
+
+      act(() => {
+        result.current.onMetricsSortChange(currentSort);
+      });
+
+      expect(result.current.metricsSort).toEqual(currentSort);
+      expect(result.current.currentPage).toBe(3);
     });
   });
 
