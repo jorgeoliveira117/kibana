@@ -15,5 +15,6 @@ export {
 export { useMetricFieldsFilter } from './use_metric_fields_filter';
 export { useDiscoverFieldForBreakdown } from './use_discover_field_for_breakdown';
 export { useFetchMetricsData } from './use_fetch_metrics_data';
+export { useSortedMetricItems } from './use_sorted_metric_items';
 export { useDimensionsWipe } from './use_dimensions_wipe';
 export { useResetPageOnDimensionsChange } from './use_reset_page_on_dimensions_change';
