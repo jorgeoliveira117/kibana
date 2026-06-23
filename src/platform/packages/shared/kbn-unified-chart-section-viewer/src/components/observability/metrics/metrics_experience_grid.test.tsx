@@ -33,6 +33,7 @@ import type { ParsedMetricItem, Dimension, UnifiedMetricsGridProps } from '../..
 import { fieldsMetadataPluginPublicMock } from '@kbn/fields-metadata-plugin/public/mocks';
 import * as metricsExperienceStateProvider from './context/metrics_experience_state_provider';
 import { DEFAULT_METRICS_SORT } from './sort/metrics_sort_types';
+import { METRICS_SORT_SELECTOR_DATA_TEST_SUBJ } from '../../../common/constants';
 
 jest.mock('./context/metrics_experience_state_provider');
 jest.mock('@kbn/ebt-tools', () => ({
@@ -289,7 +290,7 @@ describe('MetricsExperienceGrid', () => {
   });
 
   it('renders the toolbar', () => {
-    const { getByTestId } = render(<MetricsExperienceGrid {...defaultProps} />, {
+    const { getByTestId, queryByTestId } = render(<MetricsExperienceGrid {...defaultProps} />, {
       wrapper: IntlProvider,
     });
 
@@ -297,6 +298,20 @@ describe('MetricsExperienceGrid', () => {
     expect(getByTestId('metricsExperienceBreakdownSelectorButton')).toBeInTheDocument();
     expect(getByTestId('metricsExperienceToolbarSearch')).toBeInTheDocument();
     expect(getByTestId('metricsExperienceToolbarFullScreen')).toBeInTheDocument();
+    expect(queryByTestId(`${METRICS_SORT_SELECTOR_DATA_TEST_SUBJ}Button`)).not.toBeInTheDocument();
+  });
+
+  it('renders the sort selector when isGridSortEnabled is true', () => {
+    const { getByTestId } = render(
+      <MetricsExperienceGrid {...defaultProps} isGridSortEnabled={true} />,
+      {
+        wrapper: IntlProvider,
+      }
+    );
+
+    expect(getByTestId(`${METRICS_SORT_SELECTOR_DATA_TEST_SUBJ}Button`)).toHaveTextContent(
+      'Sort: A→Z'
+    );
   });
 
   it('renders Discover ErrorCallout when METRICS_INFO fetch fails with a network error', () => {
