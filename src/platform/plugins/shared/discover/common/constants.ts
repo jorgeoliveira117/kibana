@@ -55,3 +55,5 @@ export const METRICS_EXPERIENCE_PRODUCT_FEATURE_ID = 'discover:metrics-experienc
  * When disabled, panel state is stored and loaded as-is (pre-transform behavior).
  */
 export const EMBEDDABLE_TRANSFORMS_FEATURE_FLAG_KEY = 'discover.embeddableTransforms';
+
+export const METRICS_EXPERIENCE_GRID_SORT_FEATURE_FLAG_KEY = 'discover.metricsExperienceGridSort';

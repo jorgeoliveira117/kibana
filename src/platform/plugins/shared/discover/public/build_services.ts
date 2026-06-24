@@ -77,6 +77,7 @@ import {
   CASCADE_LAYOUT_ENABLED_FEATURE_FLAG_KEY,
   EMBEDDABLE_TRANSFORMS_FEATURE_FLAG_KEY,
   IS_ESQL_DEFAULT_FEATURE_FLAG_KEY,
+  METRICS_EXPERIENCE_GRID_SORT_FEATURE_FLAG_KEY,
 } from './constants';
 import { EmbeddableEditorService } from './plugin_imports/embeddable_editor_service';
 
@@ -97,6 +98,7 @@ export interface DiscoverFeatureFlags {
   getCascadeLayoutEnabled: () => boolean;
   getIsEsqlDefault: () => boolean;
   getEmbeddableTransformsEnabled: () => boolean;
+  getMetricsExperienceGridSortEnabled: () => boolean;
 }
 
 export interface DiscoverServices {
@@ -217,6 +219,8 @@ export const buildServices = ({
         core.featureFlags.getBooleanValue(IS_ESQL_DEFAULT_FEATURE_FLAG_KEY, false),
       getEmbeddableTransformsEnabled: () =>
         core.featureFlags.getBooleanValue(EMBEDDABLE_TRANSFORMS_FEATURE_FLAG_KEY, true),
+      getMetricsExperienceGridSortEnabled: () =>
+        core.featureFlags.getBooleanValue(METRICS_EXPERIENCE_GRID_SORT_FEATURE_FLAG_KEY, false),
     },
     docLinks: core.docLinks,
     embeddable: plugins.embeddable,

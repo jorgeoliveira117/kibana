@@ -10,6 +10,8 @@
 import { tags } from '@kbn/scout';
 import type { KibanaRole } from '@kbn/scout';
 
+export { METRICS_EXPERIENCE_GRID_SORT_FEATURE_FLAG_KEY } from '../../../../../public/constants';
+
 export const METRICS_TEST_INDEX_NAME = 'test-metrics-experience';
 export const METRICS_TEST_INDEX_NAME_OTHER = 'test-metrics-experience-other';
 export const METRICS_TEST_INDEX_PATTERN = 'test-metrics-*';

@@ -44,7 +44,7 @@ export interface UnifiedMetricsGridProps extends ChartSectionProps {
   externalServices?: ExternalServices;
   /**
    * When true, shows the metrics grid sort control in the toolbar.
-   * Intended to be driven by a feature flag in the Discover host.
+   * Driven by the `discover.metricsExperienceGridSort` feature flag in Discover.
    */
   isGridSortEnabled?: boolean;
 }

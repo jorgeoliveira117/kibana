@@ -31,7 +31,8 @@ const MetricsExperienceGridWrapper = (
   const breakdownField = useAppStateSelector((state: DiscoverAppState) => state.breakdownField);
   const dispatch = useInternalStateDispatch();
   const updateAppState = useCurrentTabAction(internalStateActions.updateAppState);
-  const { discoverShared, dataViews, notifications, docLinks, logger } = useDiscoverServices();
+  const { discoverShared, dataViews, notifications, docLinks, logger, discoverFeatureFlags } =
+    useDiscoverServices();
 
   const onBreakdownFieldChange = useCallback(
     (nextBreakdownField?: string) => {
@@ -59,6 +60,7 @@ const MetricsExperienceGridWrapper = (
       breakdownField={breakdownField}
       onBreakdownFieldChange={onBreakdownFieldChange}
       externalServices={externalServices}
+      isGridSortEnabled={discoverFeatureFlags.getMetricsExperienceGridSortEnabled()}
     />
   );
 };
