@@ -34,6 +34,7 @@ type UnifiedGridProps = ChartSectionProps & {
   actions: ContextAwarenessToolkitActions;
   breakdownField?: string;
   onBreakdownFieldChange?: (fieldName?: string) => void;
+  isGridSortEnabled?: boolean;
   externalServices?: {
     discoverShared?: unknown;
     dataViews?: unknown;
@@ -67,6 +68,7 @@ const mockShowErrorDialog = jest.fn();
 const mockEsqlReferenceHref = 'https://www.elastic.co/docs/reference/esql';
 const mockScopedLogger = { __sentinel: 'scopedLogger' };
 const mockLogger = { __sentinel: 'logger', get: jest.fn(() => mockScopedLogger) };
+const mockGetMetricsExperienceGridSortEnabled = jest.fn(() => false);
 
 jest.mock('../../../../../hooks/use_discover_services', () => ({
   useDiscoverServices: jest.fn(() => ({
@@ -83,6 +85,9 @@ jest.mock('../../../../../hooks/use_discover_services', () => ({
       },
     },
     logger: mockLogger,
+    discoverFeatureFlags: {
+      getMetricsExperienceGridSortEnabled: mockGetMetricsExperienceGridSortEnabled,
+    },
   })),
 }));
 
@@ -145,6 +150,7 @@ const renderChartSection = (overrides: Partial<ChartSectionProps> = {}) => {
 describe('MetricsExperienceGridWrapper', () => {
   beforeEach(() => {
     unifiedGridProps = undefined;
+    mockGetMetricsExperienceGridSortEnabled.mockReturnValue(false);
     (useAppStateSelector as jest.Mock).mockImplementation((selector) =>
       selector({ breakdownField: 'host.name' })
     );
@@ -205,5 +211,14 @@ describe('MetricsExperienceGridWrapper', () => {
     const { toolkitActions } = renderChartSection();
 
     expect(unifiedGridProps?.actions).toBe(toolkitActions);
+  });
+
+  it('passes isGridSortEnabled from discover feature flags', () => {
+    mockGetMetricsExperienceGridSortEnabled.mockReturnValue(true);
+
+    renderChartSection();
+
+    expect(mockGetMetricsExperienceGridSortEnabled).toHaveBeenCalled();
+    expect(unifiedGridProps?.isGridSortEnabled).toBe(true);
   });
 });

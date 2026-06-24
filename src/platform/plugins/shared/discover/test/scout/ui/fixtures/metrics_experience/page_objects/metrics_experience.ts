@@ -35,6 +35,7 @@ export class MetricsExperiencePage {
   public readonly breakdownSelector: BreakdownSelector;
   public readonly share: ShareHelper;
   public readonly fullscreenButton: Locator;
+  public readonly sortSelectorButton: Locator;
   public readonly chromeHeader: Locator;
 
   private readonly page: ScoutPage;
@@ -55,6 +56,7 @@ export class MetricsExperiencePage {
     this.emptyState = page.testSubj.locator('metricsExperienceNoData');
     this.share = createShareHelper(page);
     this.fullscreenButton = page.testSubj.locator('metricsExperienceToolbarFullScreen');
+    this.sortSelectorButton = page.testSubj.locator('metricsExperienceToolbarSortButton');
     this.chromeHeader = page.testSubj.locator('kbnChromeLayoutHeader');
   }
 
